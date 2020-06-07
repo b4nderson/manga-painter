@@ -1,13 +1,13 @@
-import Algorithmia from "algorithmia"
+import axios from "axios"
+import fs from "fs"
 
-var input = {
-  "src":{"bucket":"Algorithm Data", "key":"20.png"},
-  "creds":"data://s3utilities/test/credentials", 
-  "dest":"data://.algo/deeplearning/ColorfulImageColorization/temp/"
-};
-Algorithmia.client("sim9kvqk8gCKjAVygvqXU8X6YPu1")
-  .algo("s3utilities/DownloadFilefromS3/0.1.0?timeout=300") // timeout is optional
-  .pipe(input)
-  .then(function(response) {
-    console.log(response.get());
-  });
+axios({
+  method: 'get',
+  url: 'https://api.deepai.org/job-view-file/5d0694e6-4522-4baa-b8f1-ed27c3807af5/outputs/output.jpg',
+  responseType: 'stream'
+})
+  .then(function (response) {
+    response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+  }).catch((err) => {
+    console.log(err)
+  })

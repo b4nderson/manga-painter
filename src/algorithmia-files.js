@@ -2,9 +2,9 @@ import algorithmia from "algorithmia"
 import path from "path"
 import fs from "fs"
 
-export default function algorithmiaFiles(directoryName) {
-    const algorithmiaAuthenticated = algorithmia.client("sim9kvqk8gCKjAVygvqXU8X6YPu1") //It's not my ApiKey
-    const mp_directory = algorithmiaAuthenticated.dir(`data://Andersonbarbosa/${directoryName}`)
+export default function algorithmiaFiles(username, directoryName) {
+    const algorithmiaAuthenticated = algorithmia.client("sim9kvqk8gCKjAVygvqXU8X6YPu1")
+    const mp_directory = algorithmiaAuthenticated.dir(`data://${username}/${directoryName}`)
 
     function createDirectory() {
         mp_directory.exists((exists) => {
@@ -24,7 +24,7 @@ export default function algorithmiaFiles(directoryName) {
 
     function upload(fileName) {
         const FilePath = path.join(path.resolve(), `/manga/black-and-white/${fileName}`)
-        const fileUploaded = `data://Andersonbarbosa/${directoryName}/${fileName}`
+        const fileUploaded = `data://${username}/${directoryName}/${fileName}`
 
         algorithmiaAuthenticated.file(fileUploaded).exists((exists) => {
             if (!exists) {
@@ -42,7 +42,8 @@ export default function algorithmiaFiles(directoryName) {
     }
     
     function download(fileName) {
-        const fileUploaded = `data://Andersonbarbosa/${directoryName}/${fileName}`
+        const newFileName = fileName.replace(".jpg", ".png")
+        const fileUploaded = `data://.algo/deeplearning/ColorfulImageColorization/temp/${newFileName}`
 
         algorithmiaAuthenticated.file(fileUploaded).exists((exists) => {
             if (exists) {

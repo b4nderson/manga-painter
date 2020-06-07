@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Anderson-TI-Lim/manga-painter#readme",
   "dependencies": {
-    "algorithmia": "^0.3.10"
+    "algorithmia": "^0.3.10",
+    "axios": "^0.19.2",
+    "deepai": "^1.0.15"
   }
 }
