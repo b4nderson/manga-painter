@@ -61,9 +61,20 @@ export default function algorithmiaFiles(username, directoryName) {
         })
     }
 
+    function deleteDirectory() {
+        directoryName.delete(true, (response) => {
+            if (response.error) {
+                console.log(`Failed to delete directory: ${response.error.message}`)
+            } else {
+                console.log("Directory deleted!")
+            }
+        })
+    }
+
     return {
         createDirectory,
         upload,
-        download
+        download,
+        deleteDirectory
     }
 }
