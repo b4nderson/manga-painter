@@ -1,7 +1,0 @@
-{
-    "algorithmia": {
-        "apiKey": "YOUR APIKEY",
-        "username": "YOUR USERNAME", 
-        "directoryName": "mp_directory"
-    }
-}
