@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Anderson-TI-Lim/manga-painter#readme",
   "dependencies": {
-    "algorithmia": "^0.3.10"
+    "algorithmia": "^0.3.10",
+    "dotenv": "^8.2.0",
+    "pdfkit": "^0.11.0",
+    "readline-sync": "^1.4.10"
   }
 }

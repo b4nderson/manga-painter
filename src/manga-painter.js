@@ -1,24 +1,43 @@
 import AlgorithmiaFiles from "./algorithms/algorithmia-files.js"
 import picturePainter from "./algorithms/picture-painter.js"
-import path from  "path"
+import { username, directoryName } from "../settings/algorthmia.js"
 import fs from "fs"
 
-export default async function mangaPainter() {
-    const algorithmiaFiles = AlgorithmiaFiles("Andersonbarbosa", "mp_directory")
-    const allFiles = createDirectoryAndUploadFiles()
+export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
+    console.log(username, directoryName)
+    const algorithmiaFiles = AlgorithmiaFiles(username, directoryName, fileFolderPath, fileFolderName)
+    const allFiles = readFiles()
 
-    await paintAllImages(allFiles)
-    downloadAllColorsImagesSAndDeleteDirectory(allFiles)
+    createDirectory()
 
-    function createDirectoryAndUploadFiles() {
-        const allFiles = fs.readdirSync(path.join(path.resolve(), "/manga/black-and-white"))
+    uploadFilesAndPainterImages(allFiles, async () => {
+        try {
+            await paintAllImages(allFiles)
+        } catch(error) {
+            console.log(error)
+        }
+        
+        downloadAllColorsImagesSAndDeleteDirectory(allFiles, () => {
+            deleteDirectory()
+        })
+    })
+
+    function readFiles() {
+        const allFiles = fs.readdirSync(fileFolderPath)
+        return allFiles
+    }
+
+    function createDirectory() {
         algorithmiaFiles.createDirectory()
+    }
 
+    function uploadFilesAndPainterImages(allFiles, callback) {
         allFiles.forEach((file) => {
             algorithmiaFiles.upload(file)
+            if (allFiles.indexOf(file) === allFiles.length - 1) {
+                callback()
+            }
         })
-
-        return allFiles
     }
 
     async function paintAllImages(allFiles) {
@@ -34,12 +53,13 @@ export default async function mangaPainter() {
         })
     }
 
-    function downloadAllColorsImagesSAndDeleteDirectory(allFiles) {
+    function downloadAllColorsImagesSAndDeleteDirectory(allFiles, callback) {
         allFiles.forEach((file) => {
             algorithmiaFiles.download(file)
+            if (allFiles.indexOf(file) === allFiles.length - 1) {
+                callback()
+            }
         })
-
-        deleteDirectory()
     }
 
     function deleteDirectory() {

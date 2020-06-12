@@ -2,7 +2,7 @@ import algorithmia from "algorithmia"
 import path from "path"
 import fs from "fs"
 
-export default function algorithmiaFiles(username, directoryName) {
+export default function algorithmiaFiles(username, directoryName, fileFolderPath, fileFolderName) {
     const algorithmiaAuthenticated = algorithmia.client("sim9kvqk8gCKjAVygvqXU8X6YPu1")
     const mp_directory = algorithmiaAuthenticated.dir(`data://${username}/${directoryName}`)
 
@@ -23,15 +23,13 @@ export default function algorithmiaFiles(username, directoryName) {
     }
 
     function upload(fileName) {
-        const FilePath = path.join(path.resolve(), `/manga/black-and-white/${fileName}`)
+        const FilePath = `${fileFolderPath}/${fileName}`
         const fileUploaded = `data://${username}/${directoryName}/${fileName}`
 
         algorithmiaAuthenticated.file(fileUploaded).exists((exists) => {
             if (!exists) {
                 mp_directory.putFile(FilePath, (response) => {
-                    if (response.error) {
-                        return console.log(`Failed to upload file: ${response.error.message}`)
-                    } else {
+                    if (!response.error) {
                         console.log(`File uploaded.`)
                     }
                 })
@@ -44,15 +42,15 @@ export default function algorithmiaFiles(username, directoryName) {
     function download(fileName) {
         const newFileName = fileName.replace(".jpg", ".png")
         const fileUploaded = `data://.algo/deeplearning/ColorfulImageColorization/temp/${newFileName}`
+        const downloadFolder = path.join(path.resolve(), `/manga/colorful/${fileFolderName}`)
 
         algorithmiaAuthenticated.file(fileUploaded).exists((exists) => {
             if (exists) {
                 algorithmiaAuthenticated.file(fileUploaded).get((error, data) => {
-                    if (error) {
-                        return console.log(`Failed to download file. \n Error: ${error}`)
-                    }    
-
-                    fs.writeFileSync(path.join(path.resolve(), `/manga/colorful/${fileName}`), data)      
+                    if (!fs.existsSync(downloadFolder)) {
+                        fs.mkdirSync(downloadFolder)
+                    }
+                    fs.writeFileSync(path.join(downloadFolder, `/${newFileName}`), data)      
                     console.log("successfully dowanloaded data.")
                 })
             } else {
@@ -62,7 +60,7 @@ export default function algorithmiaFiles(username, directoryName) {
     }
 
     function deleteDirectory() {
-        directoryName.delete(true, (response) => {
+        mp_directory.delete(true, (response) => {
             if (response.error) {
                 console.log(`Failed to delete directory: ${response.error.message}`)
             } else {
