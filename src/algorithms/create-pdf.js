@@ -5,7 +5,7 @@ import { designCreatePDF } from "../design/design.js"
 import { kindOfImages } from "../../settings/algorthmia.js"
 
 export default function createPDFs({ fileFolderPath, fileFolderName }) {
-    const allFiles = fs.readdirSync(fileFolderPath)
+    const allFiles = fs.readdirSync(fileFolderPath).sort()
     const fileName = fileFolderName.replace(/\//g, "_") 
     
     const blackAndWhitePDFPath = path.join(path.resolve(), `/manga/pdfs/black-and-white/${fileName}.pdf`)
