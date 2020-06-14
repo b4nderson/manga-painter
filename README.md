@@ -5,13 +5,13 @@
 
 #### Downloading Mangas
 
-######You can download your mangas in [Baixar mangas](https://www.instintomangaka.com/baixar-mangas/)*
+#####You can download your mangas in [Baixar mangas](https://www.instintomangaka.com/baixar-mangas/)*
 
 #### Settings:
 
 **Open the file /settings/algorithmia.js and update the datas.**
 
-######Enter youy ApiKey and your username from [Algorithmia](https://algorithmia.com/)
+#####Enter youy ApiKey and your username from [Algorithmia](https://algorithmia.com/)
 
 ```
 const apiKey = YOUR APIKEY
