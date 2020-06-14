@@ -26,6 +26,6 @@ const username = YOUR USERNAME
 
 *Enter the folder path*
 
-###### Your fi open em google-chrome
-###### (Ele ficará salvo em "./manga/pdfs/colorful/filename.pdf")
+###### Wait to open google chrome
+~~(Ele ficará salvo em "./manga/pdfs/colorful/filename.pdf")~~
 
