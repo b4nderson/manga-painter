@@ -9,7 +9,8 @@
 
 #### Settings:
 
-**Open the file /settings/algorithmia.js** and update the datas.
+**Open the file /settings/algorithmia.js and update the datas.**
+
 ######Enter youy ApiKey and your username from [Algorithmia](https://algorithmia.com/)
 
 ```
