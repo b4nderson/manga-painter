@@ -26,7 +26,7 @@ async function start() {
         designOpenGooglechrome()
         setTimeout(() => {
             chromeOpn(colorfulPDFPath)
-        }, 5000)
+        }, 7000)
     }
 
 }
