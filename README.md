@@ -11,6 +11,8 @@
 
 *You can download your mangas in [Baixar mangas](https://www.instintomangaka.com/baixar-mangas/)*
 
+*move to the folder "/ manga / images / black-and-white"*
+
 #### Structure:
 
 _It will ignore the first one (because it is the cover) and paint the next ones, so, leave the cover as first or as you see in the Download above._
@@ -42,7 +44,7 @@ algorithmiaUsername = YOUR USERNAME
 
 ```npm start``` (To install the program)
 
-*Enter the path of the images*
+*Enter the path of the images (Just the name of the folder up to the images)*
 
 > In the end, it will be converted to pdf
 
