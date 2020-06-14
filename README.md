@@ -3,9 +3,17 @@
 #### Programa para pintar mangás automaticamente
 ###### Objetivo: #I don't know (rs)
 
-#### Downloading Mangas
+#### It working: 
+
+(Vídeo)
+
+#### Downloading Mangas:
 
 *You can download your mangas in [Baixar mangas](https://www.instintomangaka.com/baixar-mangas/)*
+
+#### Structure:
+
+_It will ignore the first one (because it is the cover) and paint the next ones, so, leave the cover as first or as you see in the Download above._
 
 #### Settings:
 
@@ -18,13 +26,25 @@ const apiKey = YOUR APIKEY
 const username = YOUR USERNAME
 ```
 
+> Or
+
+
+*Rename the ".example.env" file to just ".env" and enter your ApiKey and Username*
+
+```
+algorthmiaApiKey = YOUR APIKEY
+algorithmiaUsername = YOUR USERNAME
+```
+
 #### How to use:
 
 ```npm install``` (To install the dependencies)
 
 ```npm start``` (To install the program)
 
-*Enter the folder path*
+*Enter the path of the images*
+
+> In the end, it will be converted to pdf
 
 ###### Wait to open google chrome
 ~~(Ele ficará salvo em "./manga/pdfs/colorful/filename.pdf")~~
