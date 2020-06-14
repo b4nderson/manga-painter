@@ -1,68 +1,103 @@
 import AlgorithmiaFiles from "./algorithms/algorithmia-files.js"
 import picturePainter from "./algorithms/picture-painter.js"
-import { username, directoryName } from "../settings/algorthmia.js"
-import fs from "fs"
+import fs, { promises } from "fs"
+import { designCreateDirectory, designUploadFiles, designPaintingFiles,
+    designDownloadFiles, designDeleteDirectory} from "./design/design.js"
 
 export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
-    console.log(username, directoryName)
-    const algorithmiaFiles = AlgorithmiaFiles(username, directoryName, fileFolderPath, fileFolderName)
+    const algorithmiaFiles = AlgorithmiaFiles(fileFolderPath, fileFolderName)
     const allFiles = readFiles()
 
-    createDirectory()
+    try {
+        await createDirectory()
+    } catch(error) {
+        console.log(`Info: ${error}`)
+    }
 
-    uploadFilesAndPainterImages(allFiles, async () => {
-        try {
-            await paintAllImages(allFiles)
-        } catch(error) {
-            console.log(error)
-        }
-        
-        downloadAllColorsImagesSAndDeleteDirectory(allFiles, () => {
-            deleteDirectory()
-        })
-    })
+    await uploadFiles(allFiles)
+    await paintAllImages(allFiles)
+    await downloadAllColorfulImages(allFiles)
 
+    try {
+        await deleteDirectory()
+    } catch(info) {
+        console.log(`Info: ${info}`)
+    }
+    
     function readFiles() {
-        const allFiles = fs.readdirSync(fileFolderPath)
-        return allFiles
+        if (fs.existsSync(fileFolderPath)) {
+            const allFiles = fs.readdirSync(fileFolderPath)
+            return allFiles
+        } 
+
+        console.log(`The path ${fileFolderPath} is not exists.`)
+        process.exit()
     }
 
-    function createDirectory() {
-        algorithmiaFiles.createDirectory()
+    function returnResolvedPromiseObject() {
+        const resolvedPromise = {
+            initCounter: 0,
+            endCounter: allFiles.length
+        }
+
+        resolvedPromise.initCounter = 0
+        return resolvedPromise
     }
 
-    function uploadFilesAndPainterImages(allFiles, callback) {
-        allFiles.forEach((file) => {
-            algorithmiaFiles.upload(file)
-            if (allFiles.indexOf(file) === allFiles.length - 1) {
-                callback()
-            }
+    async function createDirectory() {
+        designCreateDirectory()
+        const createDirectoryStatus = await algorithmiaFiles.createDirectory()
+        console.log(createDirectoryStatus)
+    }
+
+    async function uploadFiles(allFiles) {
+        designUploadFiles()
+        const resolvedPromise = returnResolvedPromiseObject()
+
+        return new Promise((resolve) => {
+            allFiles.forEach(async (file) => {
+                algorithmiaFiles.upload(file, resolvedPromise, () => {
+                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
+                        resolve()
+                    }
+                })
+            })
         })
     }
 
     async function paintAllImages(allFiles) {
-        const clientData = {
-            username: "Andersonbarbosa",
-            directoryName: "mp_directory",
-            fileName: ""
-        }
+        designPaintingFiles()
+        const resolvedPromise = returnResolvedPromiseObject()
 
-        allFiles.forEach(async (file) => {
-            clientData.fileName = file
-            await picturePainter(clientData)
+        return new Promise((resolve) => {
+            allFiles.forEach(async (file) => {
+                await picturePainter(file, resolvedPromise, () => {
+                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
+                        resolve()
+                    }
+                })
+            })
         })
     }
 
-    function downloadAllColorsImagesSAndDeleteDirectory(allFiles, callback) {
-        allFiles.forEach((file) => {
-            algorithmiaFiles.download(file)
-            if (allFiles.indexOf(file) === allFiles.length - 1) {
-                callback()
-            }
+    async function downloadAllColorfulImages(allFiles) {
+        designDownloadFiles()
+        const resolvedPromise = returnResolvedPromiseObject()
+        
+        return new Promise((resolve) => {
+            allFiles.forEach(async (file) => {
+                algorithmiaFiles.download(file, resolvedPromise, () => {
+                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
+                        resolve()
+                    }
+                })
+            })
         })
     }
 
-    function deleteDirectory() {
-        algorithmiaFiles.deleteDirectory()
+    async function deleteDirectory() {
+        designDeleteDirectory()
+        const deleteDirectoryStatus = await algorithmiaFiles.deleteDirectory()
+        console.log(deleteDirectoryStatus)
     }
 }

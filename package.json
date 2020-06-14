@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "node ./test/index.js",
-    "start": "node ./index.js"
+    "start": "node --unhandled-rejections=none ./index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Anderson-TI-Lim/manga-painter#readme",
   "dependencies": {
     "algorithmia": "^0.3.10",
+    "chrome-opn": "^1.0.1",
     "dotenv": "^8.2.0",
     "pdfkit": "^0.11.0",
     "readline-sync": "^1.4.10"

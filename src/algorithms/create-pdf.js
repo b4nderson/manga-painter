@@ -1,18 +1,25 @@
 import PDFDocument from "pdfkit"
 import path from "path"
 import fs from "fs"
+import { designCreatePDF } from "../design/design.js"
 
 export default function createPDFs({ fileFolderPath, fileFolderName }) {
     const allFiles = fs.readdirSync(fileFolderPath)
+    const fileName = fileFolderName.replace(/\//g, "_") 
     
+    const blackAndWhitePDFPath = path.join(path.resolve(), `/manga/pdfs/black-and-white/${fileName}.pdf`)
+    const colorfulPDFPath = path.join(path.resolve(), `/manga/pdfs/colorful/${fileName}.pdf`)
+
+    designCreatePDF()
     createBlackAndWhitePDF()
     createColorfulPDF()
 
+    return colorfulPDFPath
+
     function createBlackAndWhitePDF() {
-        const fileName = fileFolderName.replace(/\//g, "_") 
         const doc = new PDFDocument()
 
-        doc.pipe(fs.createWriteStream(path.join(path.resolve(), `/manga/pdfs/black-and-white/${fileName}.pdf`)))  
+        doc.pipe(fs.createWriteStream(blackAndWhitePDFPath))  
         draw(doc).init()
 
         allFiles.forEach((file) => {
@@ -29,14 +36,14 @@ export default function createPDFs({ fileFolderPath, fileFolderName }) {
         draw(doc).end()
         doc.end()
 
-        console.log("Black and White PDF created!")
+        console.log("------------------------------------------")
+        console.log("Black and White PDF: created with success.")
     }
 
     function createColorfulPDF() {
-        const fileName = fileFolderName.replace(/\//g, "-")
         const doc = new PDFDocument()
 
-        doc.pipe(fs.createWriteStream(path.join(path.resolve(), `/manga/pdfs/colorful/${fileName}.pdf`)))
+        doc.pipe(fs.createWriteStream(colorfulPDFPath))
         draw(doc).init()
 
         allFiles.forEach((file) => {
@@ -50,7 +57,7 @@ export default function createPDFs({ fileFolderPath, fileFolderName }) {
                     valign: 'super'
                 })  
             } else {
-                doc.image(path.join(path.join(path.resolve(), `/manga/colorful/${fileFolderName}/${newFileName}`)), {
+                doc.image(path.join(path.join(path.resolve(), `/manga/images/colorful/${fileFolderName}/${newFileName}`)), {
                     fit: [470, 900],
                     align: 'justify-all',
                     valign: 'super'
@@ -62,7 +69,8 @@ export default function createPDFs({ fileFolderPath, fileFolderName }) {
         draw(doc).end()
         doc.end()
 
-        console.log("ColorfulPDF created!")
+        console.log("Colorful PDF: created with success!")
+        console.log("------------------------------------------")
     }
  
     function draw(doc) {
