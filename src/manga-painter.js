@@ -1,17 +1,17 @@
-import AlgorithmiaFiles from "./algorithms/algorithmia-files.js"
-import picturePainter from "./algorithms/picture-painter.js"
-import fs, { promises } from "fs"
+import AlgorithmiaFiles from "./algorithms/algorithmia-files"
+import picturePainter from "./algorithms/picture-painter"
+import fs from "fs"
 import { designCreateDirectory, designUploadFiles, designPaintingFiles,
-    designDownloadFiles, designDeleteDirectory} from "./design/design.js"
+    designDownloadFiles, designDeleteDirectory} from "./design/design"
 
 export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
     const algorithmiaFiles = AlgorithmiaFiles(fileFolderPath, fileFolderName)
-    const allFiles = readFiles()
+    const allFiles = readAndVerifyFiles()
 
     try {
-        await createDirectory()
-    } catch(error) {
-        console.log(`Info: ${error}`)
+       await createDirectory()
+    } catch(info) {
+        console.log(`Info: ${info}`)
     }
 
     await uploadFiles(allFiles)
@@ -24,12 +24,21 @@ export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
         console.log(`Info: ${info}`)
     }
     
-    function readFiles() {
+    function readAndVerifyFiles() {
         if (fs.existsSync(fileFolderPath)) {
             const allFiles = fs.readdirSync(fileFolderPath)
+            const kindOfImages = ["png", ".png", "jpeg", "jpg", ".jpg"]
+
+            allFiles.filter((file) => {
+                const kindThisImage = file.slice(-4)
+
+                if (!kindOfImages.includes(kindThisImage) && !kindOfImages.includes(`.${kindThisImage}`)) {
+                    console.log(`The file ${file} has a type undefineds.`)
+                    return process.exit()
+                } 
+            })
             return allFiles
         } 
-
         console.log(`The path ${fileFolderPath} is not exists.`)
         process.exit()
     }
@@ -39,9 +48,21 @@ export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
             initCounter: 0,
             endCounter: allFiles.length
         }
-
         resolvedPromise.initCounter = 0
         return resolvedPromise
+    }
+
+    function returnNewPromise(functionNameAlgorithmiaFiles) {
+        const resolvedPromise = returnResolvedPromiseObject()
+        return new Promise((resolve) => {
+            allFiles.forEach(async (file) => {
+                functionNameAlgorithmiaFiles(file, resolvedPromise, () => {
+                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
+                        resolve()
+                    }
+                })
+            })
+        })
     }
 
     async function createDirectory() {
@@ -50,49 +71,19 @@ export default async function mangaPainter({ fileFolderPath, fileFolderName }) {
         console.log(createDirectoryStatus)
     }
 
-    async function uploadFiles(allFiles) {
+    async function uploadFiles() {
         designUploadFiles()
-        const resolvedPromise = returnResolvedPromiseObject()
-
-        return new Promise((resolve) => {
-            allFiles.forEach(async (file) => {
-                algorithmiaFiles.upload(file, resolvedPromise, () => {
-                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
-                        resolve()
-                    }
-                })
-            })
-        })
+        return returnNewPromise(algorithmiaFiles.upload)
     }
 
-    async function paintAllImages(allFiles) {
+    async function paintAllImages() {
         designPaintingFiles()
-        const resolvedPromise = returnResolvedPromiseObject()
-
-        return new Promise((resolve) => {
-            allFiles.forEach(async (file) => {
-                await picturePainter(file, resolvedPromise, () => {
-                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
-                        resolve()
-                    }
-                })
-            })
-        })
+        return returnNewPromise(picturePainter)
     }
 
-    async function downloadAllColorfulImages(allFiles) {
+    async function downloadAllColorfulImages() {
         designDownloadFiles()
-        const resolvedPromise = returnResolvedPromiseObject()
-        
-        return new Promise((resolve) => {
-            allFiles.forEach(async (file) => {
-                algorithmiaFiles.download(file, resolvedPromise, () => {
-                    if (resolvedPromise.initCounter === resolvedPromise.endCounter) {
-                        resolve()
-                    }
-                })
-            })
-        })
+        return returnNewPromise(algorithmiaFiles.download)
     }
 
     async function deleteDirectory() {

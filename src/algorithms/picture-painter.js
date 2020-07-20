@@ -1,5 +1,5 @@
 import algorithmia from "algorithmia"
-import { apiKey, username, directoryName } from "../../settings/algorthmia.js"
+import { apiKey, username, directoryName } from "../../settings/algorthmia"
 
 export default async function PicturePainter(fileName, resolvedPromise, callback) {
     const input = {

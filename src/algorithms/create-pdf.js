@@ -1,8 +1,7 @@
 import PDFDocument from "pdfkit"
 import path from "path"
 import fs from "fs"
-import { designCreatePDF } from "../design/design.js"
-import { kindOfImages } from "../../settings/algorthmia.js"
+import { designCreatePDF } from "../design/design"
 
 export default function createPDFs({ fileFolderPath, fileFolderName }) {
     const allFiles = fs.readdirSync(fileFolderPath).sort()
@@ -48,7 +47,9 @@ export default function createPDFs({ fileFolderPath, fileFolderName }) {
         draw(doc).init()
 
         allFiles.forEach((file) => {
-            const newFileName = file.replace(`.${kindOfImages}`, ".png")
+            const kindOfImages = file.slice(-4)
+            const newFileName = kindOfImages.includes(".") ? file.replace(kindOfImages, ".png") : file.replace(`.${kindOfImages}`, ".png")
+
             doc.addPage()
 
             if (allFiles.indexOf(file) === 0) {

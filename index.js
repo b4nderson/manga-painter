@@ -1,9 +1,9 @@
-import mangaPainter from "./src/manga-painter.js"
-import createPDFs from "./src/algorithms/create-pdf.js"
+import mangaPainter from "./src/manga-painter"
+import createPDFs from "./src/algorithms/create-pdf"
 import readline from "readline-sync"
 import chromeOpn from "chrome-opn"
 import path from "path"
-import { designStartMangaPainter, designOpenGooglechrome } from "./src/design/design.js"
+import { designStartMangaPainter, designOpenGooglechrome } from "./src/design/design"
 
 async function start() {
     const nameFileFolderPathAndFileFolder = askAnReturnPathFiles()

@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Programa para pintar mangás automaticamente",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "node ./test/index.js",
-    "start": "node --unhandled-rejections=none ./index.js"
+    "start": "node --inspect -r sucrase/register ./index.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +23,8 @@
     "dotenv": "^8.2.0",
     "pdfkit": "^0.11.0",
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "sucrase": "^3.15.0"
   }
 }

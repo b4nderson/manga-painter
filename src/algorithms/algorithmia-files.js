@@ -1,7 +1,7 @@
 import algorithmia from "algorithmia"
 import path, { resolve } from "path"
 import fs, { promises } from "fs"
-import {apiKey, username, directoryName, kindOfImages} from "../../settings/algorthmia.js"
+import {apiKey, username, directoryName} from "../../settings/algorthmia"
 
 export default function algorithmiaFiles(fileFolderPath, fileFolderName) {
     const algorithmiaAuthenticated = algorithmia.client(apiKey)
@@ -51,7 +51,8 @@ export default function algorithmiaFiles(fileFolderPath, fileFolderName) {
     }
     
     function download(fileName, resolvedPromise, callback) {
-        const newFileName = fileName.replace(`.${kindOfImages}`, ".png")
+        const kindOfImages = fileName.slice(-4)
+        const newFileName = kindOfImages.includes(".") ? fileName.replace(kindOfImages, ".png") : fileName.replace(`.${kindOfImages}`, ".png")
         const fileUploaded = `data://.algo/deeplearning/ColorfulImageColorization/temp/${newFileName}`
         const downloadFolder = path.join(path.resolve(), `/manga/images/colorful/${fileFolderName}`)
 
