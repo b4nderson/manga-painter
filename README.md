@@ -7,6 +7,8 @@
 
 (Vídeo)
 
+YouTube link: https://www.youtube.com/watch?v=cG9a4zq8NEE
+
 ![Alt Text](https://github.com/Anderson-TI-Lim/manga-painter/blob/master/manga-painter%20(online-video-cutter.com).gif)
 
 #### Downloading Mangas:
