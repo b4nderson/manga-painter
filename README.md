@@ -7,6 +7,8 @@
 
 (Vídeo)
 
+![Alt Text](https://github.com/Anderson-TI-Lim/manga-painter/blob/master/manga-painter%20(online-video-cutter.com).gif)
+
 #### Downloading Mangas:
 
 *You can download your mangas in [Baixar mangas](https://www.instintomangaka.com/baixar-mangas/)*
