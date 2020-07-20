@@ -11,6 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/Anderson-TI-Lim/manga-painter.git"
   },
+  "keywords": [
+    "manga",
+    "painter",
+    "colorful",
+    "colorization",
+    "algorithmia-api"
+  ],
   "author": "Anderson-TI-Lim",
   "license": "MIT",
   "bugs": {
