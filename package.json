@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Anderson-TI-Lim/manga-painter.git"
+    "url": "git+https://github.com/kanrinha/manga-painter.git"
   },
   "keywords": [
     "manga",
@@ -18,12 +18,12 @@
     "colorization",
     "algorithmia-api"
   ],
-  "author": "Anderson-TI-Lim",
+  "author": "kanrinha",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Anderson-TI-Lim/manga-painter/issues"
+    "url": "https://github.com/kanrinha/manga-painter/issues"
   },
-  "homepage": "https://github.com/Anderson-TI-Lim/manga-painter#readme",
+  "homepage": "https://github.com/kanrinha/manga-painter#readme",
   "dependencies": {
     "algorithmia": "^0.3.10",
     "chrome-opn": "^1.0.1",
